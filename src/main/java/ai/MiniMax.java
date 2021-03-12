@@ -90,5 +90,59 @@ public class MiniMax {
         int bWidth  = board.getWidth();
         int Xwin = X.getSymbole() * bWidth;
         int Owin = O.getSymbole() * bWidth;
+
+        // Check rows for winner
+        for (int row = 0; row < bWidth; row++) {
+            for (int col = 0; col < bWidth; col++) {
+                rowSum += board.getMarkAt(row, col).getSymbole();
+            }
+            if (rowSum == Xwin) {
+                return 10 + depth;
+            } else if (rowSum == Owin) {
+                return -10 - depth;
+            }
+            rowSum = 0;
+        }
+
+        // Check colums for winner
+        rowSum = 0;
+        for (int col = 0; col < bWidth; col++) {
+            for (int row = 0; row < bWidth; row++) {
+                rowSum += board.getMarkAt(row, col).getSymbole();
+            }
+            if (rowSum == Xwin) {
+                return 10 + depth;
+            } else if (rowSum == Owin) {
+                return -10 - depth;
+            }
+            rowSum = 0;
+        }
+
+        // Check diagonal for winner.
+        // Top-left to bottom rigut diagonal
+        rowSum = 0;
+        for (int i = 0; i < bWidth; i++) {
+            rowSum += board.getMarkAt(i, i).getSymbole();
+        }
+        if (rowSum == Xwin) {
+            return 10 + depth;
+        } else if (rowSum == Owin) {
+            return -10 - depth;
+        }
+
+        // Top-right to bottom-left diagonal.
+        rowSum = 0;
+        int indexMax = bWidth - 1;
+        for (int i = 0; i <= indexMax; i++) {
+            rowSum += board.getMarkAt(i, indexMax - i).getSymbole();
+        }
+        if (rowSum == Xwin) {
+            return 10 + depth;
+        } else if (rowSum == Owin) {
+            return -10 - depth;
+        }
+
+        return 0;
+
     }
 }
