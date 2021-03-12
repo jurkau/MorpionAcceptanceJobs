@@ -10,7 +10,7 @@ public class Plateau {
     private boolean crossTurn, gameOver;
     private int availableMoves = BOARD_WITH * BOARD_WITH;
 
-    public Plateau(Symbole[][] board, Symbole[][] board1) {
+    public Plateau() {
         this.board = new Symbole[BOARD_WITH][BOARD_WITH];
         crossTurn = true;
         gameOver = false;

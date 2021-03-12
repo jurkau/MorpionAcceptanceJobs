@@ -55,7 +55,93 @@ public class Morpion  extends Application {
         }
     }
 
-    public void start(Stage stage) throws Exception {
+    public static void main(String[] args) { launch(args); }
 
+
+    public void start(Stage primaryStage) throws Exception {
+        root = new BorderPane();
+
+        root.setCenter(generateGUI());
+        root.setTop(initialiseMenu());
+
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("Morpion");
+        primaryStage.setScene(scene);
+
+        runGameLoop();
+
+        primaryStage.show();
+    }
+
+    private static GridPane generateGUI() {
+        gameBoard = new GridPane();
+        board = new Plateau();
+        gameBoard.setAlignment(Pos.CENTER);
+
+        for(int row = 0; row < board.getWidth(); row++){
+            for(int col = 0; col < board.getWidth(); col ++){
+                Tuile tuile = new Tuile(row,col, board.getMarkAt(row,col));
+                GridPane.setConstraints(tuile, col, row);
+                gameBoard.getChildren().add(tuile);
+            }
+        }
+        return gameBoard;
+    }
+
+    private MenuBar initialiseMenu() {
+        menuBar = new MenuBar();
+        gameMenu = new Menu("game");
+        newGameOption = new MenuItem("New Game");
+
+        gameMenu.getItems().add(newGameOption);
+        menuBar.getMenus().add(gameMenu);
+        newGameOption.setOnAction(e -> {
+            resetGame();
+        });
+        return menuBar;
+    }
+
+    private void runGameLoop() {
+        gameTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (board.isGameOver()) {
+                    endGame();
+                } else {
+                    if (board.isCrossTurn()){
+                        playAI();
+                    }
+                }
+            }
+        };
+        gameTimer.start();
+    }
+
+    private static void playAI(){
+
+    }
+
+    private void resetGame() {
+        root.setCenter(generateGUI());
+        runGameLoop();
+    }
+
+    private void endGame() {
+        gameTimer.stop();
+        Alert gameOverAlert = new Alert(AlertType.INFORMATION, "", new ButtonType("New Game"));
+        Symbole winner = board.getWinningMark();
+
+        gameOverAlert.setTitle("Game Over");
+        gameOverAlert.setHeaderText(null);
+        if (winner == Symbole.BLANK) {
+            gameOverAlert.setContentText("Draw!");
+        } else {
+            gameOverAlert.setContentText(winner + " victoire!");
+        }
+        gameOverAlert.setOnHidden(e -> {
+            gameOverAlert.close();
+            resetGame();
+        });
+        gameOverAlert.show();
     }
 }
