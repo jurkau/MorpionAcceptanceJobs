@@ -1,5 +1,6 @@
 package morpion;
 
+import ai.MiniMax;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -118,7 +119,18 @@ public class Morpion  extends Application {
     }
 
     private static void playAI(){
-
+        int[] move = MiniMax.getBestMove(board);
+        int row = move[0];
+        int col = move[1];
+        board.placeSymbole(row, col);
+        for (Node child : gameBoard.getChildren()) {
+            if (GridPane.getRowIndex(child) == row
+                    && GridPane.getColumnIndex(child) == col) {
+                Tuile t = (Tuile) child;
+                t.update();
+                return;
+            }
+        }
     }
 
     private void resetGame() {
