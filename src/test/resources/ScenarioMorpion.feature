@@ -5,7 +5,7 @@ Feature: Stratégie de contrage de l'IA quand elle a encore une chance de gagner
     And The grid contains "O" at "E"
     And  The grid contains "X" at "F"
     When Player "X" plays
-    Then He take place on "I"
+    Then He take place at "I"
 
   Scenario: contrage en diagonale numéro 2
     Given The grid contains "O" at "A"
